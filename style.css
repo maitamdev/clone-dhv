@@ -319,11 +319,47 @@ img { max-width: 100%; height: auto; }
 
 .tin-lon .doc-them { color: var(--do-chu-dao); font-size: 14px; font-weight: bold; }
 
-.danh-sach-tin-nho {
+.danh-sach-tin-nho-wrap {
     flex: 4;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.danh-sach-tin-nho {
+    display: flex;
+    flex-direction: column;
     gap: 20px;
+    max-height: 420px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+}
+
+.tin-nho-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.tin-nho-arrow {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    background-color: var(--trang);
+    color: var(--chu-toi);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 12px;
+}
+
+.tin-nho-arrow:hover {
+    background-color: #f5f5f5;
+    border-color: #bbb;
 }
 
 .tin-nho { display: flex; gap: 15px; align-items: flex-start; }
@@ -368,7 +404,8 @@ img { max-width: 100%; height: auto; }
 }
 
 .chuong-trinh {
-    flex: 1;
+    flex: 0 0 calc((100% - 20px) / 3);
+    min-width: 0;
     position: relative;
     overflow: hidden;
     border-radius: 2px;
@@ -1436,6 +1473,7 @@ img { max-width: 100%; height: auto; }
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: phoneRing 3s ease-in-out infinite;
 }
 
 .btn-tong-dai-footer .text {
@@ -1541,6 +1579,23 @@ img { max-width: 100%; height: auto; }
     border-radius: 50%;
 }
 
+#nut-lien-he a.nut-icon {
+    animation: phoneRing 3s ease-in-out infinite;
+}
+
+@keyframes phoneRing {
+    0%   { transform: rotate(0deg); }
+    2%   { transform: rotate(15deg); }
+    4%   { transform: rotate(-13deg); }
+    6%   { transform: rotate(12deg); }
+    8%   { transform: rotate(-10deg); }
+    10%  { transform: rotate(8deg); }
+    12%  { transform: rotate(-5deg); }
+    14%  { transform: rotate(2deg); }
+    16%  { transform: rotate(0deg); }
+    100% { transform: rotate(0deg); }
+}
+
 .mascot-way-ctn {
     position: relative;
     width: 100%;
@@ -1637,6 +1692,25 @@ img { max-width: 100%; height: auto; }
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     transition: transform 0.3s;
     margin-top: 60px;
+    /* Swing animation — xoay từ trên xuống */
+    transform-origin: left center;
+    opacity: 0;
+    transform: rotateY(-90deg);
+}
+
+.nut-treo-xanh.treo-visible,
+.nut-treo-do.treo-visible {
+    animation: flipLeft 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.nut-treo-do.treo-visible {
+    animation-delay: 0.3s;
+}
+
+@keyframes flipLeft {
+    0%   { opacity: 0; transform: rotateY(-90deg); }
+    50%  { opacity: 1; }
+    100% { opacity: 1; transform: rotateY(0deg); }
 }
 
 .nut-treo-xanh { background-color: var(--xanh-den); color: var(--trang); }
@@ -1685,7 +1759,7 @@ img { max-width: 100%; height: auto; }
 .danh-sach-so {
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: flex-start;
     text-align: center;
     position: relative;
     z-index: 2;
@@ -1697,6 +1771,9 @@ img { max-width: 100%; height: auto; }
     align-items: center;
     gap: 15px;
 }
+
+.muc-so:nth-child(2) { margin-top: 50px; }
+.muc-so:nth-child(4) { margin-top: 50px; }
 
 .muc-so .so {
     font-size: 64px;
@@ -1714,3 +1791,222 @@ img { max-width: 100%; height: auto; }
 .icon-so {
     margin-top: 10px;
 }
+
+/* ============================================================
+   CSS cho JavaScript — Hiệu ứng tương tác
+   ============================================================ */
+
+/* Sticky Menu */
+#menu {
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.35s ease;
+}
+
+#menu.menu-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: slideDown 0.4s ease forwards;
+}
+
+#menu.menu-hidden {
+    transform: translateY(-100%);
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Scroll to Top Button */
+#scroll-to-top {
+    position: fixed;
+    bottom: 200px;
+    right: 22px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--do-chu-dao);
+    color: var(--trang);
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(227, 27, 35, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+#scroll-to-top:hover {
+    background: var(--do-dam);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(227, 27, 35, 0.45);
+}
+
+/* Scroll Reveal Animations — Mô phỏng AOS */
+.js-reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.js-revealed {
+    opacity: 1;
+    transform: translateY(0) !important;
+}
+
+/* Hình ảnh tòa nhà — slide up riêng, lâu hơn */
+.anh-toa-nha.js-reveal {
+    transform: translateY(80px);
+    transition-duration: 1.2s;
+}
+
+/* Mũi tên đỏ — hiệu ứng đẩy vào mờ→đậm lặp lại */
+.mui-ten-do {
+    animation: arrowPulse 2s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+    0%   { opacity: 0.15; transform: translateX(-20px) scale(0.92); }
+    50%  { opacity: 1;    transform: translateX(0) scale(1); }
+    100% { opacity: 0.15; transform: translateX(-20px) scale(0.92); }
+}
+
+.tv-anh-sv-wrap.sv-hidden {
+    transform: translateX(-100%);
+}
+
+.tv-anh-sv-wrap.sv-slide-in {
+    transform: translateX(0);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+.dt-o.js-reveal:nth-child(2) { transition-delay: 0.05s; }
+.dt-o.js-reveal:nth-child(3) { transition-delay: 0.1s; }
+.dt-o.js-reveal:nth-child(4) { transition-delay: 0.15s; }
+.dt-o.js-reveal:nth-child(5) { transition-delay: 0.2s; }
+.dt-o.js-reveal:nth-child(6) { transition-delay: 0.25s; }
+.dt-o.js-reveal:nth-child(7) { transition-delay: 0.3s; }
+.dt-o.js-reveal:nth-child(8) { transition-delay: 0.35s; }
+
+.muc-so.js-reveal:nth-child(2) { transition-delay: 0.15s; }
+.muc-so.js-reveal:nth-child(3) { transition-delay: 0.3s; }
+.muc-so.js-reveal:nth-child(4) { transition-delay: 0.45s; }
+
+.sk-da-card.js-reveal:nth-child(2) { transition-delay: 0.1s; }
+.sk-da-card.js-reveal:nth-child(3) { transition-delay: 0.2s; }
+.sk-da-card.js-reveal:nth-child(4) { transition-delay: 0.3s; }
+
+/* Mascot Bounce + Di chuyển từ trái qua phải */
+.mascot.img-ab {
+    animation: mascotWalk 8s linear infinite;
+}
+
+@keyframes mascotWalk {
+    0%   { right: 90%; }
+    100% { right: 5%; }
+}
+
+@keyframes mascotBounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-12px); }
+}
+
+/* Form Validation Error */
+.tv-field-error input,
+.tv-field-error select,
+.tv-field-error textarea {
+    border-color: var(--do-chu-dao) !important;
+    background: #fff5f5 !important;
+}
+
+.tv-error {
+    display: block;
+    animation: shakeError 0.4s ease;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(5px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(3px); }
+}
+
+/* Banner Parallax — overflow ẩn */
+#banner {
+    overflow: hidden;
+}
+
+/* Hover hiệu ứng cho tin tức */
+.tin-lon .anh-tin-lon .img-tin-lon,
+.tin-nho .anh-tin-nho .img-tin-nho {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tin-lon:hover .img-tin-lon {
+    transform: scale(1.05);
+}
+
+.tin-nho:hover .img-tin-nho {
+    transform: scale(1.08);
+}
+
+/* Hover cho chương trình slide */
+.chuong-trinh .anh-chuong-trinh {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chuong-trinh:hover .anh-chuong-trinh {
+    transform: scale(1.08);
+}
+
+/* Hover cho sự kiện cards */
+.sk-da-thumb img {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sk-da-card:hover .sk-da-thumb img {
+    transform: scale(1.06);
+}
+
+/* Hover cho đối tác */
+.dt-o {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dt-o:hover {
+    background-color: #fafafa;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.dt-o-logo img {
+    transition: transform 0.3s ease;
+}
+
+.dt-o:hover .dt-o-logo img {
+    transform: scale(1.1);
+}
+
